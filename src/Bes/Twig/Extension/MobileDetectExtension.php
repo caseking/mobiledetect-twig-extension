@@ -2,8 +2,10 @@
 
 namespace Bes\Twig\Extension;
 
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class MobileDetectExtension extends \Twig_Extension
+class MobileDetectExtension extends AbstractExtension
 {
     protected $detector;
 
@@ -23,15 +25,15 @@ class MobileDetectExtension extends \Twig_Extension
     public function getFunctions()
     {
         $functions = array(
-            new \Twig_SimpleFunction('get_available_devices', array($this, 'getAvailableDevices')),
-            new \Twig_SimpleFunction('is_mobile', array($this, 'isMobile')),
-            new \Twig_SimpleFunction('is_tablet', array($this, 'isTablet'))
+            new TwigFunction('get_available_devices', array($this, 'getAvailableDevices')),
+            new TwigFunction('is_mobile', array($this, 'isMobile')),
+            new TwigFunction('is_tablet', array($this, 'isTablet'))
         );
 
         foreach ($this->getAvailableDevices() as $device => $fixedName) {
             $methodName = 'is'.$device;
             $twigFunctionName = 'is_'.$fixedName;
-            $functions[] = new \Twig_SimpleFunction($twigFunctionName, array($this, $methodName));
+            $functions[] = new TwigFunction($twigFunctionName, array($this, $methodName));
         }
 
         return $functions;
